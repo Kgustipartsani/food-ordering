@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 
-function ShoppingCart({ cart, removeItem, closeCart, totalPrice, checkout }) {
+function ShoppingCart({ cart, removeItem, closeCart, totalPrice, checkout, clearCart }) {
   return (
     <div className="fixed right-0 top-0 h-full w-80 sm:w-96 bg-slate-300 shadow-lg 
       px-4 sm:px-6 md:px-10 py-4 sm:py-6 shadow-black mt-12 md:mt-16 lg:mt16 overflow-y-auto">
@@ -41,12 +41,12 @@ function ShoppingCart({ cart, removeItem, closeCart, totalPrice, checkout }) {
         </p>
       </div>
       <div className="space-y-3 sm:space-y-4 mt-3 sm:mt-4">
-      <button
-         className={`w-full px-3 sm:px-4 py-2 text-sm sm:text-base 
+        <button
+          className={`w-full px-3 sm:px-4 py-2 text-sm sm:text-base 
        bg-blue-500 text-white rounded 
           ${cart.length === 0 ? ' opacity-50' : 'hover:bg-blue-600'}`}
-         onClick={cart.length > 0 ? checkout : null} 
-         disabled={cart.length === 0} 
+          onClick={cart.length > 0 ? () => { checkout(); clearCart(); } : null}  // Menambahkan clearCart saat checkout
+          disabled={cart.length === 0}
         >
           Checkout
         </button>

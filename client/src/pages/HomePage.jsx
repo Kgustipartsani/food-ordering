@@ -7,6 +7,7 @@ import ShoppingCart from '../components/ShoppingCart';
 import MenuSection from '../components/MenuSection';
 import MenuDetailPopup from '../components/MenuDetailPopup';
 import Footer from '../components/Footer';
+import supabase from '../services/supabaseClient';
 
 function HomePage() {
   const [menus, setMenus] = useState([]);
@@ -24,15 +25,24 @@ function HomePage() {
 
   
   useEffect(() => {
+    // Fungsi untuk mengambil data menu dari Supabase
     const fetchMenus = async () => {
       try {
-        const response = await axios.get('http://localhost:5001/menus');
-        setMenus(response.data);
+        const { data, error } = await supabase
+          .from('menus')  // Nama tabel yang ada di Supabase
+          .select('*');   // Ambil semua data dari tabel
+
+        if (error) {
+          throw error;  // Tangani error jika ada
+        }
+
+        setMenus(data);  // Menyimpan data yang diterima ke state
       } catch (err) {
-        console.error('Error fetching menus:', err);
+        console.error('Error fetching menus:', err.message); // Menampilkan error jika terjadi masalah
       }
     };
-    fetchMenus();
+
+    fetchMenus();  // Panggil fungsi untuk mengambil data
   }, []);
 
   
@@ -72,6 +82,11 @@ function HomePage() {
     setCart((prevCart) => prevCart.filter((_, index) => index !== indexToRemove));
   };
 
+  const clearCart = () => {
+    setCart([]);  // Mengosongkan array cart
+  };
+  
+
   return (
     <div className="relative">
       
@@ -109,6 +124,7 @@ function HomePage() {
           closeCart={() => setIsCartOpen(false)}
           totalPrice={calculateTotalPrice()}
           checkout={handleCheckout}
+          clearCart={clearCart}
         />
       )}
 

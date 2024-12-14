@@ -5,6 +5,12 @@ import React from 'react';
 const MenuDetailPopup = ({ selectedMenu, onClose, onAddToCart }) => {
   if (!selectedMenu) return null; 
 
+  // Fungsi untuk menangani klik tombol Bungkus dan menutup popup
+  const handleBungkusClick = () => {
+    onAddToCart();  // Menambahkan item ke keranjang
+    onClose();      // Menutup popup
+  };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-white p-4 sm:p-6 rounded shadow-lg max-w-md w-full">
@@ -19,7 +25,7 @@ const MenuDetailPopup = ({ selectedMenu, onClose, onAddToCart }) => {
         <div className="mt-4 flex gap-4">
           <button
             className="px-3 py-2 bg-green-500 text-white rounded text-sm hover:bg-green-600"
-            onClick={onAddToCart}
+            onClick={handleBungkusClick} // Panggil fungsi handleBungkusClick saat tombol Bungkus di-klik
           >
             Bungkus
           </button>
